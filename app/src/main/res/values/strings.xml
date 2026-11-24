@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">Trade Spotlight</string>
+    <string name="search_placeholder">Search stock or broker…</string>
+    <string name="clear_search">Clear search</string>
+    <string name="refresh">Refresh</string>
+    <string name="refresh_picks">Refresh picks</string>
+    <string name="filter_all">ALL</string>
+    <string name="filter_buy">BUY</string>
+    <string name="filter_sell">SELL</string>
+    <string name="status_refreshed">Data refreshed</string>
+    <string name="status_offline_cache">Saved copy (offline)</string>
+    <string name="status_bundled_fallback">Bundled snapshot (offline)</string>
+    <string name="status_error">Unable to load. Check internet and tap Refresh.</string>
+    <string name="status_loading">Loading picks…</string>
+    <string name="label_cmp">Entry \u00B7 CMP</string>
+    <string name="label_live_cmp">CMP (%1$s)</string>
+    <string name="label_live_cmp_plain">Live CMP</string>
+    <string name="label_target_1">T1</string>
+    <string name="label_target_n">T%1$d</string>
+    <string name="label_stop_loss">Stop Loss</string>
+    <string name="label_move">Move</string>
+    <string name="label_upside">To T1</string>
+    <string name="label_to_last">To last</string>
+    <string name="label_risk">Risk</string>
+    <string name="label_rr_t1">R:R T1</string>
+    <string name="label_rr_last">R:R last</string>
+    <string name="status_active">ACTIVE</string>
+    <string name="status_t1_hit">T1 HIT</string>
+    <string name="status_sl_hit">SL HIT</string>
+    <string name="broker_not_named">Broker not named</string>
+    <string name="period_not_given">not given</string>
+    <string name="read_original">Read original</string>
+    <string name="empty_no_picks">No picks found.</string>
+    <string name="empty_no_data">No data yet.</string>
+    <string name="disclaimer_footer">Source: Moneycontrol Trade Spotlight, last 10 days. Entry CMP is from the article date; live CMP is fetched from NSE/BSE market quotes (delayed/indicative). Targets and stop loss are the experts\u2019 views, not advice. Verify before trading.</string>
+</resources>

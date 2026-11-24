@@ -1,0 +1,6 @@
+{
+  "name": "Trade Spotlight",
+  "description": "Daily Moneycontrol Trade Spotlight stock picks with CMP, targets, stop loss, risk-reward ratio, and offline cache.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
