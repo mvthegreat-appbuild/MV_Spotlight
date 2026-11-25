@@ -1,5 +1,7 @@
 name: Build APK
-
+on:
+  schedule:
+    - cron: "30 2 * * *"
 on:
   workflow_dispatch:
   push:
