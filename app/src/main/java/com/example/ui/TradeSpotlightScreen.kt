@@ -450,6 +450,12 @@ private fun HeaderBanner(
                     lineHeight = 16.sp,
                 )
             }
+            Text(
+                text = stringResource(R.string.auto_update_schedule),
+                fontSize = 11.sp,
+                color = EmeraldGreen.copy(alpha = 0.9f),
+                lineHeight = 16.sp,
+            )
         }
     }
     Box(

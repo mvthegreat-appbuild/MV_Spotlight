@@ -127,4 +127,22 @@ class ExampleUnitTest {
         assertEquals(1, vm.uiState.value.filteredPicks.size)
         assertEquals("Federal Bank", vm.uiState.value.filteredPicks.first().stock)
     }
+
+    @Test
+    fun `calculateInitialDelayToNext8AmMillis schedules same day before 8am and next day after 8am`() {
+        val utc = java.util.TimeZone.getTimeZone("UTC")
+        val before8Am = java.util.Calendar.getInstance(utc).apply {
+            set(2026, java.util.Calendar.NOVEMBER, 24, 6, 30, 0)
+            set(java.util.Calendar.MILLISECOND, 0)
+        }.timeInMillis
+        val delayBefore = com.example.data.sync.DailySyncScheduler.calculateInitialDelayToNext8AmMillis(before8Am, utc)
+        assertEquals(90L * 60L * 1000L, delayBefore)
+
+        val after8Am = java.util.Calendar.getInstance(utc).apply {
+            set(2026, java.util.Calendar.NOVEMBER, 24, 9, 0, 0)
+            set(java.util.Calendar.MILLISECOND, 0)
+        }.timeInMillis
+        val delayAfter = com.example.data.sync.DailySyncScheduler.calculateInitialDelayToNext8AmMillis(after8Am, utc)
+        assertEquals(23L * 60L * 60L * 1000L, delayAfter)
+    }
 }
