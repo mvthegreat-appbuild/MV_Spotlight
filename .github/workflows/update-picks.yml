@@ -1,0 +1,45 @@
+name: Update Picks
+
+on:
+  schedule:
+    # Runs daily at 02:30 UTC (08:00 AM IST)
+    - cron: '30 2 * * *'
+  workflow_dispatch: # Allows manual trigger from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  update-picks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Run update script
+        # If your script needs API keys, uncomment below and add them in Repo Settings -> Secrets -> Actions
+        # env:
+        #   API_KEY: ${{ secrets.API_KEY }}
+        run: python update_picks.py
+
+      - name: Commit and push updated picks
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: auto-update picks"
+            git push
+          fi
