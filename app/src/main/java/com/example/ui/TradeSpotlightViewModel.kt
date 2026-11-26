@@ -14,6 +14,8 @@ import com.example.data.repository.LiveQuoteRepository
 import com.example.data.repository.PicksDataSource
 import com.example.data.repository.PicksFetchResult
 import com.example.data.repository.PicksRepository
+import com.example.data.sync.AutoSyncStatus
+import com.example.data.sync.DailySyncScheduler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,12 +43,15 @@ data class TradeSpotlightUiState(
     val searchQuery: String = "",
     val dataSource: DataSource? = null,
     val appCheckedAt: String = "",
+    val autoSyncStatus: AutoSyncStatus = AutoSyncStatus(),
     val errorMessage: String? = null,
 )
 
 class TradeSpotlightViewModel(
     private val repository: PicksDataSource,
     private val liveQuoteRepository: LiveQuoteDataSource? = null,
+    private val getAutoSyncStatus: () -> AutoSyncStatus = { AutoSyncStatus() },
+    private val onRemoteFetchSucceeded: () -> Unit = {},
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(TradeSpotlightUiState())
@@ -79,16 +84,20 @@ class TradeSpotlightViewModel(
 
             when (val result = repository.fetchPicks()) {
                 is PicksFetchResult.Success -> {
+                    if (result.source == DataSource.REMOTE) {
+                        onRemoteFetchSucceeded()
+                    }
                     val all = result.data.picks
                     val buyCount = all.count { it.call.equals("BUY", ignoreCase = true) }
                     val sellCount = all.count { it.call.equals("SELL", ignoreCase = true) }
                     val checkedTime = PickFormatters.formatCurrentTime()
+                    val syncStatus = getAutoSyncStatus()
 
                     _uiState.update { state ->
                         state.copy(
                             isInitialLoading = false,
                             isRefreshing = false,
-                            isLoadingQuotes = liveQuoteRepository != null,
+                            isLoadingQuotes = liveQuoteRepository != null && all.isNotEmpty(),
                             picksResponse = result.data,
                             allCount = all.size,
                             buyCount = buyCount,
@@ -96,6 +105,7 @@ class TradeSpotlightViewModel(
                             filteredPicks = applyFilter(all, state.selectedFilter, state.searchQuery),
                             dataSource = result.source,
                             appCheckedAt = checkedTime,
+                            autoSyncStatus = syncStatus,
                             errorMessage = null,
                         )
                     }
@@ -172,6 +182,8 @@ class TradeSpotlightViewModel(
                 return TradeSpotlightViewModel(
                     repository = PicksRepository(application),
                     liveQuoteRepository = LiveQuoteRepository(application),
+                    getAutoSyncStatus = { DailySyncScheduler.getAutoSyncStatus(application) },
+                    onRemoteFetchSucceeded = { DailySyncScheduler.clearAutoSyncFailure(application) },
                 ) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

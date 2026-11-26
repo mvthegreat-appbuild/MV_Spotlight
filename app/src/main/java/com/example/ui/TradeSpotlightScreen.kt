@@ -450,10 +450,23 @@ private fun HeaderBanner(
                     lineHeight = 16.sp,
                 )
             }
+            val syncStatus = uiState.autoSyncStatus
+            val (syncText, syncColor) = when {
+                syncStatus.lastFailed ->
+                    stringResource(R.string.auto_update_last_failed) to AmberOffline
+                syncStatus.lastSuccessMillis != null -> {
+                    val lastTime = remember(syncStatus.lastSuccessMillis) {
+                        PickFormatters.formatCurrentTime(syncStatus.lastSuccessMillis)
+                    }
+                    stringResource(R.string.auto_update_last_success, lastTime) to EmeraldGreen.copy(alpha = 0.9f)
+                }
+                else ->
+                    stringResource(R.string.auto_update_schedule) to EmeraldGreen.copy(alpha = 0.9f)
+            }
             Text(
-                text = stringResource(R.string.auto_update_schedule),
+                text = syncText,
                 fontSize = 11.sp,
-                color = EmeraldGreen.copy(alpha = 0.9f),
+                color = syncColor,
                 lineHeight = 16.sp,
             )
         }

@@ -33,5 +33,7 @@
     <string name="empty_no_picks">No picks found.</string>
     <string name="empty_no_data">No data yet.</string>
     <string name="auto_update_schedule">Auto-update: Daily 8:00 AM</string>
+    <string name="auto_update_last_success">Auto-update: Daily 8:00 AM · Last: %1$s</string>
+    <string name="auto_update_last_failed">Auto-update: Daily 8:00 AM · Last sync failed</string>
     <string name="disclaimer_footer">Source: Moneycontrol Trade Spotlight, last 10 days. Entry CMP is from the article date; live CMP is fetched from NSE/BSE market quotes (delayed/indicative). Targets and stop loss are the experts\u2019 views, not advice. Verify before trading.</string>
 </resources>
